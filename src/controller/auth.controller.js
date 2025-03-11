@@ -1,8 +1,6 @@
-import { TokenExpiredError } from "jsonwebtoken";
-import config from "../config";
 import User from "../model/user.schema.js";
 import asyncHandler from "../service/asyncHandler.js";
-import CustomError from "../utils/customError";
+import CustomError from "../utils/customError.js";
 
 export const cookieOptions={
     expires: new Date(Date.now()+30*24*60*60*1000),
@@ -73,5 +71,14 @@ export const logout=asyncHandler(async(req,res)=>{
     res.status(200).json({
         success:true,
         message:"Logged out"
+    })
+})
+
+export const getProfile=asyncHandler(async(req,res)=>{
+    const {user}=req;
+    if(!user) throw new CustomError("user not found",401);
+    res.status(200).json({
+        success:true,
+        user
     })
 })
